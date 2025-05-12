@@ -1,12 +1,12 @@
 function animateStats() {
     const stats = document.querySelectorAll('.stat');
-    
-    stats.forEach(stat => {
-        const target = parseInt(stat.getAttribute('data-target'));
-        const duration = 6000; // 2 seconds
+
+    for (const stat of stats) {
+        const target = Number.parseInt(stat.getAttribute('data-target'));
+        const duration = 6000; // 6 seconds
         const increment = target / (duration / 16); // 60fps
         let current = 0;
-        
+
         const updateCount = () => {
             if (current < target) {
                 current += increment;
@@ -16,29 +16,30 @@ function animateStats() {
                 stat.textContent = target;
             }
         };
-        
+
         // Start animation when element is in view
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
+            for (const entry of entries) {
                 if (entry.isIntersecting) {
                     updateCount();
                     observer.unobserve(entry.target);
                 }
-            });
+            }
         }, { threshold: 0.5 });
-        
+
         observer.observe(stat);
-    });
+    }
 }
 
 // Call the function when document is loaded
 document.addEventListener('DOMContentLoaded', animateStats);
 
-document.querySelectorAll('.toggle-details').forEach(button => {
+const toggleButtons = document.querySelectorAll('.toggle-details');
+for (const button of toggleButtons) {
     button.addEventListener('click', () => {
         const details = button.previousElementSibling;
         const isActive = details.classList.contains('active');
-        
+
         // Animation
         if (!isActive) {
             details.classList.add('active');
@@ -50,4 +51,4 @@ document.querySelectorAll('.toggle-details').forEach(button => {
             button.innerHTML = 'Learn More <i class="fas fa-chevron-down"></i>';
         }
     });
-});
+};
